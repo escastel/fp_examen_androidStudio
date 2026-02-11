@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
@@ -33,7 +34,6 @@ import androidx.compose.ui.unit.sp
 import com.example.castellanoriosester_examen.R
 import com.google.firebase.auth.FirebaseAuth
 
-// TODO: Hacer el onClick
 @Composable
 fun Login(
     auth: FirebaseAuth,
@@ -42,6 +42,7 @@ fun Login(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isVisiblePassword by remember { mutableStateOf(false)}
+    var error by remember { mutableStateOf(false) }
 
     Scaffold { padding ->
         Column(
@@ -109,11 +110,33 @@ fun Login(
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF27D21F) ),
-                onClick = {}
+                onClick ={
+                    auth.signInWithEmailAndPassword(email, password)
+                        .addOnSuccessListener { onLoginClick() }
+                        .addOnFailureListener{ error = true }
+                }
             ) {
                 Text(
                     text = "Login",
                     fontSize = 20.sp
+                )
+            }
+
+            if (error){
+                AlertDialog(
+                    title = {
+                        Text(text = "Login")
+                    },
+                    text = {
+                        Text(text = "Usuario o contraseña incorrectos")
+                    },
+                    confirmButton = {
+                        Button(onClick = { error = false} ) {
+                            Text(text = "Aceptar")
+                        }
+                    },
+                    onDismissRequest = { error = false },
+
                 )
             }
         }

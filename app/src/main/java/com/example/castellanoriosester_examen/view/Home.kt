@@ -22,11 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.castellanoriosester_examen.R
-import com.example.castellanoriosester_examen.ui.theme.CastellanoRiosEster_ExamenTheme
 
 //TODO: AÑADIR LOS DATOS DE LOS JUGADORES DE LA BASE DE DATOS y borrar
 @Composable
@@ -74,10 +72,10 @@ fun Home(
     }
 }
 
-@Preview
-@Composable
-fun HomePreview(){
-    CastellanoRiosEster_ExamenTheme {
-        Home()
-    }
-}
+//@Preview
+//@Composable
+//fun HomePreview(){
+//    CastellanoRiosEster_ExamenTheme {
+//        Home()
+//    }
+//}
