@@ -41,7 +41,6 @@ import com.example.castellanoriosester_examen.R
 import com.example.castellanoriosester_examen.ui.theme.CastellanoRiosEster_ExamenTheme
 import com.example.castellanoriosester_examen.viewModel.DBViewModel
 
-//TODO: AÑADIR LOS DATOS DE LOS JUGADORES DE LA BASE DE DATOS y borrar. Recoger todos los jugadores con el viewmodel
 @Composable
 fun Home(
     onAddClick: () -> Unit,
@@ -79,26 +78,26 @@ fun Home(
                 .padding(16.dp)
                 .fillMaxSize()
         ) {
-            items(jugadores) { item ->
+            items(jugadores, key = { it.id }) { jugador ->
                 Card(
                     elevation = CardDefaults.cardElevation(20.dp),
                     modifier = Modifier.padding(16.dp),
                     colors = CardDefaults.cardColors(containerColor = Color(0xFFF2FCEE))
                 ){
                     Column(
-                        modifier = Modifier,
+                        modifier = Modifier.padding(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ){
                         AsyncImage(
-                            model = item.imagen,
+                            model = jugador.imagen,
                             contentDescription = "Imagen del jugador"
                         )
 
                         Row(
                             verticalAlignment = Alignment.Top,
                             horizontalArrangement = Arrangement.SpaceEvenly,
-                            modifier = Modifier.fillMaxWidth().padding(16.dp)
+                            modifier = Modifier.fillMaxWidth()
                         ){
                             Box(
                                 contentAlignment = Alignment.Center,
@@ -108,7 +107,7 @@ fun Home(
                                     .background(Color(0xFF27D21F))
                             ){
                                 Text(
-                                    text = item.numero.toString(),
+                                    text = jugador.numero.toString(),
                                     color = Color.White,
                                     fontSize = 24.sp
                                 )
@@ -118,19 +117,19 @@ fun Home(
                                 modifier = Modifier.height(100.dp)
                             ){
                                 Text(
-                                    text = item.nombre,
+                                    text = jugador.nombre,
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 20.sp
                                 )
                                 Text(
-                                    text = item.nacionalidad,
+                                    text = jugador.nacionalidad,
                                     fontStyle = FontStyle.Italic
                                 )
                                 Text(
-                                    text = item.posicion
+                                    text = jugador.posicion
                                 )
                             }
-                            IconButton( onClick = { viewModel.deleteJugador(item.id) } ) {
+                            IconButton( onClick = { viewModel.deleteJugador(jugador.id) } ) {
                                 Icon(
                                     painter = painterResource(R.drawable.ic_delete),
                                     contentDescription = ""

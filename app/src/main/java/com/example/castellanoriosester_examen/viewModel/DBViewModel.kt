@@ -1,5 +1,6 @@
 package com.example.castellanoriosester_examen.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.castellanoriosester_examen.modelo.Jugador
 import com.google.firebase.Firebase
@@ -12,7 +13,7 @@ import kotlin.jvm.java
 
 class DBViewModel: ViewModel() {
     private val db = Firebase.firestore
-    private val jugadoresCollection = db.collection("Jugadores")
+    private val jugadoresCollection = db.collection("jugadores")
 
     private val _jugadores = MutableStateFlow<List<Jugador>>(emptyList())
     val jugadores: StateFlow<List<Jugador>> = _jugadores
@@ -25,6 +26,7 @@ class DBViewModel: ViewModel() {
     private fun getJugadores() {
         jugadoresCollection.addSnapshotListener { snapshot, error ->
             if (error != null) {
+                Log.e("DBViewModel", "Error al obtener jugadores", error)
                 return@addSnapshotListener
             }
             if (snapshot != null) {
