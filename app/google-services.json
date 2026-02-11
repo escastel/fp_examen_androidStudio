@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "682109850535",
+    "project_id": "examen-bc672",
+    "storage_bucket": "examen-bc672.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:682109850535:android:23331bebe2a89942701c82",
+        "android_client_info": {
+          "package_name": "com.example.castellanoriosester_examen"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0n1mofK-MiY5suEPPvDjS49n5wNKmK2M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
