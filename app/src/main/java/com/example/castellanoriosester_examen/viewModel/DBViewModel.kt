@@ -8,17 +8,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.String
 import kotlin.collections.mapNotNull
-import kotlin.collections.set
 import kotlin.jvm.java
-import kotlin.text.isNotBlank
-import kotlin.text.toDouble
 
 class DBViewModel: ViewModel() {
     private val db = Firebase.firestore
     private val jugadoresCollection = db.collection("Jugadores")
 
-    private val _Jugadores = MutableStateFlow<List<Jugador>>(emptyList())
-    val jugadores: StateFlow<List<Jugador>> = _Jugadores
+    private val _jugadores = MutableStateFlow<List<Jugador>>(emptyList())
+    val jugadores: StateFlow<List<Jugador>> = _jugadores
 
 
     init {
@@ -31,18 +28,24 @@ class DBViewModel: ViewModel() {
                 return@addSnapshotListener
             }
             if (snapshot != null) {
-                val JugadoresList = snapshot.documents.mapNotNull { doc ->
+                val jugadoresList = snapshot.documents.mapNotNull { doc ->
                     val jugador = doc.toObject(Jugador::class.java)
                     jugador?.id = doc.id
                     jugador
                 }
-                _Jugadores.value = JugadoresList
+                _jugadores.value = jugadoresList
             }
         }
     }
 
-    fun addJugador(nombre: String, numero: Int, posicion: String, nacionalidad: String, imagen: String) {
-        val Jugador = Jugador(
+    fun addJugador(
+        nombre: String,
+        numero: Int,
+        posicion: String,
+        nacionalidad: String,
+        imagen: String
+    ) {
+        val jugador = Jugador(
             nombre = nombre,
             numero = numero,
             posicion = posicion,
@@ -50,41 +53,16 @@ class DBViewModel: ViewModel() {
             imagen = imagen
         )
 
-        jugadoresCollection.add(Jugador)
+        jugadoresCollection.add(jugador)
             .addOnFailureListener {}
-            .addOnSuccessListener { }
-            .addOnCompleteListener { }
+            .addOnSuccessListener {}
+            .addOnCompleteListener {}
     }
 
     fun deleteJugador(id: String) {
         jugadoresCollection.document(id)
             .delete()
             .addOnFailureListener {}
-            .addOnFailureListener {}
-    }
-
-    fun updateJugador(id: String, nombre: String, numero: String, posicion: String, nacionalidad: String, imagen: String) {
-        val data = mutableMapOf<String, Any>()
-
-        if (nombre.isNotBlank()) {
-            data["nombre"] = nombre
-        }
-        if (numero.isNotBlank()) {
-            data["numero"] = numero.toDouble()
-        }
-        if (posicion.isNotBlank()) {
-            data["posicion"] = posicion
-        }
-        if (nacionalidad.isNotBlank()) {
-            data["nacionalidad"] = nacionalidad
-        }
-        if (imagen.isNotBlank()) {
-            data["imagen"] = imagen
-        }
-
-        jugadoresCollection.document(id)
-            .update(data)
-            .addOnSuccessListener {}
             .addOnFailureListener {}
     }
 }

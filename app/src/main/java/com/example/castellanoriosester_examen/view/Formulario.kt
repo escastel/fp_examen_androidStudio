@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -22,12 +23,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.castellanoriosester_examen.ui.theme.CastellanoRiosEster_ExamenTheme
+import com.example.castellanoriosester_examen.viewModel.DBViewModel
 
 @Composable
 fun Formulario(
     onAddClick: () -> Unit,
-    onCancelClick: () -> Unit
+    onCancelClick: () -> Unit,
+    viewModel: DBViewModel = viewModel()
 ) {
     var nombre by remember { mutableStateOf("") }
     var numero by remember { mutableStateOf("") }
@@ -40,7 +44,7 @@ fun Formulario(
             Text(
                 text = "Nuevo Jugador",
                 fontSize = 30.sp,
-                modifier = Modifier.padding(start = 16.dp),
+                modifier = Modifier.fillMaxWidth().padding(16.dp).padding(top = 36.dp),
                 fontWeight = FontWeight.Bold
             )
         }
@@ -95,7 +99,7 @@ fun Formulario(
             TextField(
                 value = imagen,
                 onValueChange = { imagen = it },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().height(100.dp),
                 label = {
                     Text(
                         text = "URL Imagen"
@@ -105,13 +109,24 @@ fun Formulario(
 
             //TODO: AÑADIR A JUGADOR O VOLVER AL HOME
             Row(
-                horizontalArrangement = Arrangement.spacedBy(40.dp)
+                horizontalArrangement = Arrangement.spacedBy(24.dp)
             ){
                 Button(
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF27D21F)),
                     onClick = {
-                    onAddClick
-                }
+                        viewModel.addJugador(
+                            nombre,
+                            numero.toInt(),
+                            posicion,
+                            nacionalidad,
+                            imagen
+                        )
+                        onAddClick()
+                        nombre = ""
+                        numero = ""
+                        posicion = ""
+                        nacionalidad = ""
+                        imagen = "" }
                 ) {
                     Text (
                         text = "Agregar Jugador"

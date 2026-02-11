@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil3.compose.AsyncImage
 import com.example.castellanoriosester_examen.R
 import com.example.castellanoriosester_examen.ui.theme.CastellanoRiosEster_ExamenTheme
 import com.example.castellanoriosester_examen.viewModel.DBViewModel
@@ -55,8 +56,20 @@ fun Home(
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().padding(16.dp).padding(top = 36.dp)
             )
+        },
+        bottomBar = {
+            Button(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 24.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF27D21F) ),
+                onClick = onAddClick
+            ) {
+                Text(
+                    text = "Agregar Jugador",
+                    fontSize = 20.sp
+                )
+            }
         }
     ) { paddingValues ->
         LazyColumn(
@@ -74,8 +87,14 @@ fun Home(
                 ){
                     Column(
                         modifier = Modifier,
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
                     ){
+                        AsyncImage(
+                            model = item.imagen,
+                            contentDescription = "Imagen del jugador"
+                        )
+
                         Row(
                             verticalAlignment = Alignment.Top,
                             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -99,19 +118,19 @@ fun Home(
                                 modifier = Modifier.height(100.dp)
                             ){
                                 Text(
-                                    text = "Kendrick Perry",
+                                    text = item.nombre,
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 20.sp
                                 )
                                 Text(
-                                    text = "Estados unidos",
+                                    text = item.nacionalidad,
                                     fontStyle = FontStyle.Italic
                                 )
                                 Text(
-                                    text = "Base")
-
+                                    text = item.posicion
+                                )
                             }
-                            IconButton( onClick = {} ) {
+                            IconButton( onClick = { viewModel.deleteJugador(item.id) } ) {
                                 Icon(
                                     painter = painterResource(R.drawable.ic_delete),
                                     contentDescription = ""
@@ -121,16 +140,6 @@ fun Home(
                     }
                 }
             }
-        }
-        Button(
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF27D21F) ),
-            onClick = {}
-        ) {
-            Text(
-                text = "Agregar Jugador",
-                fontSize = 20.sp
-            )
         }
     }
 }
